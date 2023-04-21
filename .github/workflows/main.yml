@@ -25,3 +25,17 @@ jobs:
         cd Numerical-Method-main
         npm i
         npm test
+# Server  
+    - run: |
+        cd Numerical-Method-main
+        docker build -t react-web .        
+    - run: |
+        cd Numerical-Backend-main
+        docker build -t express-mysql .
+    - run: |
+        docker pull mysql
+        docker pull phpmyadmin
+    - run: |
+        cd Numerical-Backend-main
+        docker-compose up -d
+        docker-compose down
