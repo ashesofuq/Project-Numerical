@@ -31,5 +31,6 @@ jobs:
         docker pull mysql
         docker pull phpmyadmin
     - run: |
+        cd Numerical-Backend-main
         docker-compose up -d
         docker-compose down
