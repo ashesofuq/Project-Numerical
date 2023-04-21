@@ -1,0 +1,35 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+    - run: |
+        cd Numerical-Method-main
+        docker build -t react-web .        
+    - run: |
+        cd Numerical-Backend-main
+        docker build -t express-mysql .
+    - run: |
+        docker pull mysql
+        docker pull phpmyadmin
+    - run: |
+        docker-compose up -d
+        docker-compose down
