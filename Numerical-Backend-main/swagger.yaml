@@ -1,0 +1,207 @@
+openapi: 3.0.3
+info:
+  title: Swagger Numerical Method
+  description: |-
+    This is a Test API for Numerical Method Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io).
+  version: 1.0.11
+tags:
+  - name: User
+    description: username and password
+  - name: Root Of Equation
+    description: Some method about Root of Equation
+  - name: Linear Algebra
+    description: Some method about Linear Algebra
+  - name: Least-Square Regreesion
+    description: Some method about Linear Regreesion  
+paths:
+  /login:
+    post:
+      tags:
+       - User
+      summary: Login with username and password
+      description: Login with username and password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: successfully logged in
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Login'
+  /auth:
+    post:
+      tags:
+       - User
+      summary: JWT token 
+      description: JWT token
+      responses:
+        '200':
+          description: status OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Auth-OK'
+      security:
+        - api_key: []
+  /bisection:
+    get:
+      tags:
+        - Root Of Equation
+      summary: Number of problems Bisection
+      description: Show Structure
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bisection'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Problem not found
+  /bisection/{BisectionId}:
+    get:
+      tags:
+        - Root Of Equation
+      summary: Number of problems Bisection
+      description: return a single problem
+      operationId: getBisectionById
+      parameters:
+        - name: BisectionId
+          in: path
+          description: ID of bisection to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bisection'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Problem not found
+  /cramer:
+    get:
+      tags:
+       - Linear Algebra
+      summary: Number of problems CramerRule
+      description: Show Structure
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CramerRule'
+        '400':
+          description: Invalid ID supplied        
+        '404':
+          description: Problem not found
+  /polynomial_regression:
+    get:
+      tags:
+       - Least-Square Regreesion
+      summary: Number of problems Polynomial Linear Regression
+      description: Show Structure
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolynomialLinearRegression'
+        '400':
+          description: Invalid ID supplied        
+        '404':
+          description: Problem not found
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Auth-OK:
+      type: object
+      properties:
+        status:
+          type: string
+        decoded:
+          type: object
+    Bisection:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: number of problem
+        equation:
+          type: string
+          description: problem
+        xl:
+          type: number
+          description: left scope
+        xr:
+          type: number
+          description: right scope
+    CramerRule:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: number of problem
+        size:
+          type: integer
+          description: size of matrix
+        values:
+          items:
+            type: array
+          description: Matrix Data A, B
+    PolynomialLinearRegression:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: number of problem
+        values:
+          items:
+            type: array
+          description: table Data X, y
+        x:
+          type: number
+          description: input x
+        n:
+          type: integer
+          description: table size
+        order:
+          type: integer
+          description: number of degree
+  securitySchemes:
+    api_key:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
