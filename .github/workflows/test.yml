@@ -21,6 +21,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
-    - run: cd Numerical-Method-main
-    - run: npm i
-    - run: npm test
+    - run: |
+        cd Numerical-Method-main
+        npm i
+        npm test
